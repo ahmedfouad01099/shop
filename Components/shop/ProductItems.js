@@ -9,18 +9,7 @@ function ProductItems(props) {
       <View style={{ marginHorizontal: 20, marginTop: 10 }}>
         <Text style={styles.title}>{props.title}</Text>
         <Text style={styles.price}>{props.price.toFixed(2)}</Text>
-        <View style={styles.actions}>
-          <Button
-            color={Colors.primary}
-            title="View Details"
-            onPress={props.onViewDetail}
-          />
-          <Button
-            color={Colors.primary}
-            title="To Cart"
-            onPress={props.onAddToCart}
-          />
-        </View>
+        <View style={styles.actions}>{props.children}</View>
       </View>
     </View>
   );
@@ -49,8 +38,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginVertical: 4,
     textAlign: "center",
+    fontFamily: "open-sans-bold",
   },
-  price: { fontSize: 14, color: "#888", textAlign: "center" },
+
+  price: {
+    fontSize: 14,
+    color: "#888",
+    textAlign: "center",
+    fontFamily: "open-sans-bold",
+  },
   actions: {
     flexDirection: "row",
     justifyContent: "space-between",

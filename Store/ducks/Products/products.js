@@ -1,10 +1,8 @@
 import PRODUCTS from "../../../data/dummy-data";
 
 // Actions
-const LOAD = "my-app/widgets/LOAD";
-const CREATE = "my-app/widgets/CREATE";
-const UPDATE = "my-app/widgets/UPDATE";
-const REMOVE = "my-app/widgets/REMOVE";
+const LOAD = "my-app/products/LOAD";
+export const DELETE_PRODUCT = "my-app/products/DELETE_PRODUCT";
 
 const initialState = {
   availableProducts: PRODUCTS,
@@ -16,22 +14,31 @@ export function loadWidgets() {
   return { type: LOAD };
 }
 
-export function createWidget(widget) {
-  return { type: CREATE, widget };
-}
+export const deleteProduct = (productId) => {
+  return {
+    type: DELETE_PRODUCT,
+    pid: PRODUCTS.filter((prod) => prod.id === productId)[0].id,
+  };
+};
 
-export function updateWidget(widget) {
-  return { type: UPDATE, widget };
-}
-
-export function removeWidget(widget) {
-  return { type: REMOVE, widget };
-}
-
+/////////////////////////////////////////////////////////
+const onDeleteProduct = (state, action) => {
+  console.log("26", action.pid);
+  return {
+    ...state,
+    userProducts: state.userProducts.filter(
+      (product) => product.id !== action.pid
+    ),
+    availableProducts: state.availableProducts.filter(
+      (product) => product.id !== action.pid
+    ),
+  };
+};
 // Reducer
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    // do reducer stuff
+    case DELETE_PRODUCT:
+      return onDeleteProduct(state, action);
     default:
       return state;
   }

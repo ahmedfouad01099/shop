@@ -1,6 +1,8 @@
 // Actions
 const ADD_TO_CART = "my-app/Cart/ADD_TO-CART";
 const REMOVE_FROM_CART = "my-app/Cart/REMOVE_FROM_CART";
+import { ADD_ORDER } from "../Orders/Orders";
+import { DELETE_PRODUCT } from "../Products/products";
 
 import CartItem from "../../../models/cart-items";
 
@@ -52,14 +54,14 @@ const onRemoveFromCart = (state, action) => {
   const selectedCartItem = state.items[action.productId];
   let updatedCartItems;
   if (currentQuantity > 1) {
-    console.log('55===', selectedCartItem);
+    console.log("55===", selectedCartItem);
     const updatedCartItem = new CartItem(
       selectedCartItem.quantity - 1,
       selectedCartItem.productPrice,
       selectedCartItem.productTitle,
       selectedCartItem.sum - selectedCartItem.productPrice
     );
-    console.log('61====', updatedCartItem);
+    console.log("61====", updatedCartItem);
     updatedCartItems = { ...state.items, [action.productId]: updatedCartItem };
   } else {
     updatedCartItems = { ...state.items };
@@ -78,6 +80,20 @@ export default function reducer(state = initialState, action = {}) {
       return onAddToCart(state, action);
     case REMOVE_FROM_CART:
       return onRemoveFromCart(state, action);
+    case ADD_ORDER:
+      return initialState;
+    case DELETE_PRODUCT:
+      if (!state.items[action.pid]) {
+        return state;
+      }
+      const updateItems = { ...state.items };
+      const itemTotal = state.items[action.pid].sum;
+      delete updateItems[action.pid];
+      return {
+        ...state,
+        items: updateItems,
+        totalAmount: state.totalAmount - itemTotal,
+      };
     default:
       return state;
   }
